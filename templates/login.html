@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR Login</title>
+</head>
+<body>
+
+<h2>Scan QR to Login</h2>
+
+<div id="preview" style="width:300px;"></div>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<script>
+    let scanned = false;   // ✅ prevents multiple scans
+
+    const qr = new Html5Qrcode("preview");
+
+    qr.start(
+        { facingMode: "environment" },   // back camera
+        { fps: 10, qrbox: 250 },
+
+        (qrCodeMessage) => {
+            if (scanned) return;          // ✅ safety check
+            scanned = true;
+
+            fetch("/qr-login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ qr_data: qrCodeMessage })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.redirect) {
+                    qr.stop().then(() => {
+                        window.location.href = data.redirect;
+                    });
+                } else {
+                    alert("Invalid QR");
+                    scanned = false;     // allow rescan
+                }
+            })
+            .catch(err => {
+                alert("Server error");
+                scanned = false;
+            });
+        }
+    )
+    .catch(err => {
+        console.error(err);
+        alert("Camera error or permission denied");
+    });
+</script>
+
+</body>
+</html>

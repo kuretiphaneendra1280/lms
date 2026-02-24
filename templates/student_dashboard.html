@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Dashboard</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f9;
+            padding: 30px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .lecture {
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        video {
+            width: 100%;
+            max-width: 500px;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Welcome Student {{ roll }}</h2>
+
+<h3>Available Lectures</h3>
+
+{% if lectures %}
+    {% for lecture in lectures %}
+        <div class="lecture">
+            <h4>{{ lecture.title }}</h4>
+            <p>{{ lecture.description }}</p>
+            <video controls>
+                <source src="/{{ lecture.video_path }}" type="video/mp4">
+                Your browser does not support video.
+            </video>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No lectures uploaded yet.</p>
+{% endif %}
+
+</body>
+</html>

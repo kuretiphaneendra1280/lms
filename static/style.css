@@ -1,0 +1,47 @@
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background: linear-gradient(270deg,#1d2671,#c33764,#1d2671);
+background-size:600% 600%;
+animation: gradientMove 12s ease infinite;
+font-family:'Segoe UI',sans-serif;
+}
+
+@keyframes gradientMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+.container{
+width:400px;
+}
+
+.card{
+background:rgba(255,255,255,0.08);
+padding:30px;
+border-radius:20px;
+backdrop-filter:blur(20px);
+box-shadow:0 0 40px rgba(0,0,0,0.4);
+}
+
+input{
+width:100%;
+padding:12px;
+margin:6px 0;
+border:none;
+border-radius:10px;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+background:linear-gradient(45deg,#00dbde,#fc00ff);
+color:white;
+cursor:pointer;
+}

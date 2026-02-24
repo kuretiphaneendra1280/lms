@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teacher Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .lecture-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background: #fafafa;
+        }
+
+        video {
+            margin-top: 10px;
+            border-radius: 6px;
+        }
+
+        .logout-btn {
+            background-color: #dc3545;
+        }
+
+        .logout-btn:hover {
+            background-color: #a71d2a;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Teacher Dashboard</h2>
+
+<!-- ================= Upload Lecture ================= -->
+<div class="section">
+    <h3>Upload Lecture</h3>
+
+    <form method="POST" action="/upload-lecture" enctype="multipart/form-data">
+
+        <label>Lecture Title</label>
+        <input type="text" name="title" required>
+
+        <label>Description</label>
+        <textarea name="description"></textarea>
+
+        <label>Select Domain</label>
+        <select name="domain_id" required>
+            <option value="">-- Select Domain --</option>
+            {% for domain in domains %}
+                <option value="{{ domain.id }}">{{ domain.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Upload Video</label>
+        <input type="file" name="video" accept="video/*" required>
+
+        <button type="submit">Upload Lecture</button>
+    </form>
+</div>
+
+<!-- ================= Uploaded Lectures ================= -->
+<div class="section">
+    <h3>Uploaded Lectures</h3>
+
+    {% for lecture in lectures %}
+        <div class="lecture-card">
+            <h4>{{ lecture.title }}</h4>
+            <p><strong>Domain:</strong> {{ lecture.domain_name }}</p>
+            <p>{{ lecture.description }}</p>
+
+            <video width="400" controls>
+                <source src="/{{ lecture.video_path }}" type="video/mp4">
+            </video>
+        </div>
+    {% else %}
+        <p>No lectures uploaded yet.</p>
+    {% endfor %}
+</div>
+
+<!-- ================= Create Exam ================= -->
+<div class="section">
+    <h3>Create Exam</h3>
+
+    <form method="POST" action="/create-exam">
+        <label>Exam Title</label>
+        <input type="text" name="title" required>
+
+        <label>Total Marks</label>
+        <input type="number" name="total_marks" required>
+
+        <label>Exam Date</label>
+        <input type="date" name="exam_date" required>
+
+        <button type="submit">Create Exam</button>
+    </form>
+</div>
+
+<!-- ================= Add Marks ================= -->
+<div class="section">
+    <h3>Add Marks</h3>
+
+    <form method="POST" action="/add-marks">
+        <label>Student Roll</label>
+        <input type="text" name="roll" required>
+
+        <label>Exam ID</label>
+        <input type="number" name="exam_id" required>
+
+        <label>Score</label>
+        <input type="number" name="score" required>
+
+        <button type="submit">Add Marks</button>
+    </form>
+</div>
+
+<!-- ================= Mark Attendance ================= -->
+<div class="section">
+    <h3>Mark Attendance</h3>
+
+    <form method="POST" action="/mark-attendance">
+        <label>Student Roll</label>
+        <input type="text" name="roll" required>
+
+        <label>Date</label>
+        <input type="date" name="date" required>
+
+        <label>Status</label>
+        <select name="status">
+            <option value="Present">Present</option>
+            <option value="Absent">Absent</option>
+        </select>
+
+        <button type="submit">Mark Attendance</button>
+    </form>
+</div>
+
+<!-- ================= Logout ================= -->
+<div style="text-align:center;">
+    <a href="/teacher-logout">
+        <button class="logout-btn">Logout</button>
+    </a>
+</div>
+
+</body>
+</html>

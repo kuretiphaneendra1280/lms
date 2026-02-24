@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Parent Dashboard</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+            background-color: #f4f6f9;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin-bottom: 30px;
+            background: white;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .summary-box {
+            padding: 15px;
+            background: white;
+            width: 40%;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .good { color: green; font-weight: bold; }
+        .warning { color: orange; font-weight: bold; }
+        .danger { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<h2>Parent Dashboard</h2>
+<h3>Student: {{ student.name }}</h3>
+<p><strong>Roll Number:</strong> {{ student.roll }}</p>
+
+<div class="summary-box">
+    <h4>Attendance Percentage: 
+        {% if attendance_percentage >= 75 %}
+            <span class="good">{{ attendance_percentage }}%</span>
+        {% elif attendance_percentage >= 50 %}
+            <span class="warning">{{ attendance_percentage }}%</span>
+        {% else %}
+            <span class="danger">{{ attendance_percentage }}%</span>
+        {% endif %}
+    </h4>
+</div>
+
+<h3>Report Card</h3>
+
+<table>
+    <tr>
+        <th>Exam</th>
+        <th>Total Marks</th>
+        <th>Score</th>
+        <th>Percentage</th>
+        <th>Grade</th>
+    </tr>
+
+    {% for r in results %}
+    <tr>
+        <td>{{ r.title }}</td>
+        <td>{{ r.total_marks }}</td>
+        <td>{{ r.score }}</td>
+        <td>{{ r.percentage }}%</td>
+        <td>
+            {% if r.grade == "Fail" %}
+                <span class="danger">{{ r.grade }}</span>
+            {% elif r.grade in ["A+", "A"] %}
+                <span class="good">{{ r.grade }}</span>
+            {% else %}
+                <span class="warning">{{ r.grade }}</span>
+            {% endif %}
+        </td>
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan="5">No exam results available.</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>Attendance Records</h3>
+
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Status</th>
+    </tr>
+
+    {% for a in attendance %}
+    <tr>
+        <td>{{ a.date }}</td>
+        <td>
+            {% if a.status == "Present" %}
+                <span class="good">Present</span>
+            {% else %}
+                <span class="danger">Absent</span>
+            {% endif %}
+        </td>
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan="2">No attendance records.</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>
