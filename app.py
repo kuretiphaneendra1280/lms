@@ -26,7 +26,7 @@ db = mysql.connector.connect(
 # ================= EMAIL FUNCTION =================
 def send_email_with_attachments(to_email, subject, body, files):
     EMAIL_ADDRESS = "kuretiphaneendra@gmail.com"
-    EMAIL_PASSWORD = "rokpmozraaesshrw"
+    EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 
     msg = EmailMessage()
     msg["From"] = EMAIL_ADDRESS
